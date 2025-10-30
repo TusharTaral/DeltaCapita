@@ -5,16 +5,9 @@ import UploadForm from './components/UploadForm';
 import PdfViewer from './components/PdfViewer';
 import { usePdfSigner } from './hooks/usePdfSigner';
 
-export default function App() {
-  const {
-    accept,
-    selectedFile,
-    signedUrl,
-    isSubmitting,
-    errorMessage,
-    onFileChange,
-    onSubmit,
-  } = usePdfSigner();
+export default function App(): JSX.Element {
+  const { accept, selectedFile, signedUrl, isSubmitting, errorMessage, onFileChange, onSubmit } =
+    usePdfSigner();
 
   return (
     <div className="app-root">
@@ -34,5 +27,3 @@ export default function App() {
     </div>
   );
 }
-
-

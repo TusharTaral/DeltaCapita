@@ -11,6 +11,7 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
+    alias: { '@': path.resolve(__dirname, 'src') },
   },
   devtool: 'source-map',
   module: {
@@ -53,7 +54,8 @@ module.exports = {
       'X-Frame-Options': 'DENY',
       'Referrer-Policy': 'no-referrer',
       // Dev CSP allows WDS websocket and permits blob: in frames for PDF preview
-      'Content-Security-Policy': "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; font-src 'self'; connect-src 'self' http://localhost:4000 ws://localhost:3000; frame-src 'self' blob:; object-src 'self' blob:; base-uri 'self'; form-action 'self'",
+      'Content-Security-Policy':
+        "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; font-src 'self'; connect-src 'self' http://localhost:4000 ws://localhost:3000; frame-src 'self' blob:; object-src 'self' blob:; base-uri 'self'; form-action 'self'",
     },
     proxy: [
       {
@@ -74,5 +76,3 @@ module.exports = {
     hints: false,
   },
 };
-
-

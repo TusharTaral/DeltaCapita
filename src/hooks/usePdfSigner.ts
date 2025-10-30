@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from 'react';
 import { ACCEPT_MIME, MAX_FILE_BYTES } from '../utils/constants';
-import { isPdfFile, isWithinSize } from '../utils/validation';
+import { isPdfFile, isWithinSize, formatMaxSize } from '../utils/validation';
 import { signPdf } from '../utils/api';
 import { useObjectUrl } from './useObjectUrl';
 import type { ChangeEvent, FormEvent } from 'react';
@@ -28,7 +28,9 @@ export function usePdfSigner() {
     }
     if (!isWithinSize(file, MAX_FILE_BYTES)) {
       setSelectedFile(null);
-      setErrorMessage('File is too large. Maximum allowed size is 10MB.');
+      setErrorMessage(
+        `File is too large. Maximum allowed size is ${formatMaxSize(MAX_FILE_BYTES)}.`
+      );
       return;
     }
     setSelectedFile(file);
@@ -38,25 +40,28 @@ export function usePdfSigner() {
     setSignedBlob(null);
   }, []);
 
-  const onSubmit = useCallback(async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setErrorMessage('');
-    resetSigned();
-    if (!selectedFile) {
-      setErrorMessage('Select a PDF to upload.');
-      return;
-    }
-    setIsSubmitting(true);
-    try {
-      const blob = await signPdf(selectedFile);
-      setSignedBlob(blob);
-    } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'An unexpected error occurred.';
-      setErrorMessage(message);
-    } finally {
-      setIsSubmitting(false);
-    }
-  }, [resetSigned, selectedFile]);
+  const onSubmit = useCallback(
+    async (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      setErrorMessage('');
+      resetSigned();
+      if (!selectedFile) {
+        setErrorMessage('Select a PDF to upload.');
+        return;
+      }
+      setIsSubmitting(true);
+      try {
+        const blob = await signPdf(selectedFile);
+        setSignedBlob(blob);
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : 'An unexpected error occurred.';
+        setErrorMessage(message);
+      } finally {
+        setIsSubmitting(false);
+      }
+    },
+    [resetSigned, selectedFile]
+  );
 
   return {
     accept,
@@ -68,5 +73,3 @@ export function usePdfSigner() {
     onSubmit,
   } as const;
 }
-
-

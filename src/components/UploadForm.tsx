@@ -12,11 +12,20 @@ type Props = {
   errorMessage: string;
 };
 
-export default function UploadForm({ accept, isSubmitting, onFileChange, onSubmit, selectedFile, errorMessage }: Props): JSX.Element {
+export default function UploadForm({
+  accept,
+  isSubmitting,
+  onFileChange,
+  onSubmit,
+  selectedFile,
+  errorMessage,
+}: Props): JSX.Element {
   return (
     <section className="card">
       <form className="upload-form" onSubmit={onSubmit} autoComplete="off">
-        <label htmlFor="file" className="input-label">Choose a PDF</label>
+        <label htmlFor="file" className="input-label">
+          Choose a PDF
+        </label>
         <input
           id="file"
           name="file"
@@ -25,14 +34,18 @@ export default function UploadForm({ accept, isSubmitting, onFileChange, onSubmi
           onChange={onFileChange}
           aria-describedby="file-help"
         />
-        <p id="file-help" className="help-text">Max size {formatMaxSize(MAX_FILE_BYTES)}. Only PDF.</p>
+        <p id="file-help" className="help-text">
+          Max size {formatMaxSize(MAX_FILE_BYTES)}. Only PDF.
+        </p>
         <button className="primary-btn" type="submit" disabled={isSubmitting || !selectedFile}>
           {isSubmitting ? 'Signing…' : 'Upload & Sign'}
         </button>
-        {errorMessage ? <p role="alert" className="error-text">{errorMessage}</p> : null}
+        {errorMessage ? (
+          <p role="alert" aria-live="polite" className="error-text">
+            {errorMessage}
+          </p>
+        ) : null}
       </form>
     </section>
   );
 }
-
-
