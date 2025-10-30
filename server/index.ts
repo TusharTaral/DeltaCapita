@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 import { PDFDocument, rgb } from 'pdf-lib';
+import { looksLikePdf } from './utils/pdf';
 
 const app = express();
 
@@ -64,11 +65,6 @@ const upload = multer({
     cb(null, true);
   },
 });
-
-function looksLikePdf(buffer: Buffer | Uint8Array): boolean {
-  if (!buffer || buffer.length < 4) return false;
-  return buffer[0] === 0x25 && buffer[1] === 0x50 && buffer[2] === 0x44 && buffer[3] === 0x46; // %PDF
-}
 
 app.post('/api/sign', upload.single('file'), async (req: Request, res: Response) => {
   try {
